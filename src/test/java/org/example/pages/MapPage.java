@@ -1,7 +1,6 @@
 package org.example.pages;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,7 +12,7 @@ import static org.example.utils.WaitUtils.waitForAllElementsVisible;
 import static org.example.utils.WaitUtils.waitForElementVisible;
 
 public class MapPage extends BasePage {
-    @FindBy(css = "body.light-theme, .light-theme, [data-theme='light']")
+    @FindBy(css = "#theme")
     private WebElement lightThemeIndicator;
 
     @FindBy(css = ".theme-control label")
@@ -22,7 +21,7 @@ public class MapPage extends BasePage {
     @FindBy(css = ".tiles-component__button")
     private WebElement mapLayerButton;
 
-    @FindBy(css = ".tiles-component .dropdown-menulist .dropdown-menuitem")
+    @FindBy(css = ".tiles-component .dropdown-menu__list .dropdown-menu__item")
     private List<WebElement> mapLayers;
 
     @FindBy(xpath = "//div[@class='sidebar-tabs']//p[contains(text(),'Маршруты')]")
@@ -49,8 +48,9 @@ public class MapPage extends BasePage {
 
     @Step("Переключение темы")
     public MapPage switchTheme() {
+        waitForElementVisible(driver, themeToggle, DEFAULT_TIMEOUT);
+
         click(themeToggle);
-        waitForElementVisible(driver, lightThemeIndicator, DEFAULT_TIMEOUT);
         return this;
     }
 
@@ -74,8 +74,7 @@ public class MapPage extends BasePage {
 
     @Step("Проверка включена ли светлая тема")
     public boolean isLightThemeEnabled() {
-        String bodyClass = driver.findElement(By.tagName("body")).getAttribute("class");
-        return bodyClass != null && bodyClass.contains("light-theme");
+        return !lightThemeIndicator.isSelected();
     }
 
     @Step("Проверка доступности более двух подложек")
@@ -84,6 +83,7 @@ public class MapPage extends BasePage {
         waitForAllElementsVisible(driver, mapLayers, DEFAULT_TIMEOUT);
         return mapLayers.size() > 2;
     }
+
     @Step("Получение расстояния маршрута")
     public String getRouteDistance() {
         return getText(routeDistance);

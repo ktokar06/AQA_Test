@@ -1,6 +1,10 @@
 package org.example.tests;
 
-import io.qameta.allure.*;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.example.pages.MapPage;
 import org.example.pages.SearchPage;
 import org.example.utils.ParameterProvider;
@@ -15,10 +19,10 @@ public class MapTests extends BaseTest {
     @Story("Переключение темы карты")
     @Severity(SeverityLevel.CRITICAL)
     public void testThemeSwitch() {
-        driver.get(ParameterProvider.get("base.url"));
-        MapPage mapPage = new MapPage(driver);
-
-        mapPage.switchTheme();
+        driver.get(ParameterProvider.get("atlas.url"));
+        MapPage mapPage = new MapPage(driver)
+                .waitForLoading()
+                .switchTheme();
 
         Assert.assertTrue(mapPage.isLightThemeEnabled(), "Тема не переключилась на светлую");
     }
@@ -27,10 +31,10 @@ public class MapTests extends BaseTest {
     @Story("Маршрут")
     @Severity(SeverityLevel.CRITICAL)
     public void testBuildRoute() {
-        driver.get(ParameterProvider.get("base.url"));
-        MapPage mapPage = new MapPage(driver);
-
-        mapPage.buildRoute();
+        driver.get(ParameterProvider.get("atlas.url"));
+        MapPage mapPage = new MapPage(driver)
+                .waitForLoading()
+                .buildRoute();
 
         String distance = mapPage.getRouteDistance();
         Assert.assertNotNull(distance, "Расстояние маршрута не отображается");
@@ -41,8 +45,9 @@ public class MapTests extends BaseTest {
     @Story("Поиск адреса")
     @Severity(SeverityLevel.CRITICAL)
     public void testSearchAddress() {
-        driver.get(ParameterProvider.get("base.url"));
-        SearchPage searchPage = new SearchPage(driver);
+        driver.get(ParameterProvider.get("atlas.url"));
+        SearchPage searchPage = new SearchPage(driver)
+                .waitForLoading();
 
         String cords = searchPage
                 .searchAddress(ParameterProvider.get("search.address"))
@@ -56,8 +61,9 @@ public class MapTests extends BaseTest {
     @Story("Слои карты")
     @Severity(SeverityLevel.NORMAL)
     public void testMapLayersAvailability() {
-        driver.get(ParameterProvider.get("base.url"));
-        MapPage mapPage = new MapPage(driver);
+        driver.get(ParameterProvider.get("atlas.url"));
+        MapPage mapPage = new MapPage(driver)
+                .waitForLoading();
 
         Assert.assertTrue(mapPage.areMapLayersAvailable(), "Менее двух подложек доступны");
     }

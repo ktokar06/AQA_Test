@@ -1,6 +1,6 @@
 package org.example.listeners;
 
-import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
 import org.example.tests.BaseTest;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -23,25 +23,32 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         System.out.println("FAILED: " + result.getName());
-
-        Object testClass = result.getInstance();
-        if (testClass instanceof BaseTest baseTest) {
-            WebDriver driver = baseTest.getDriver();
-            if (driver != null) {
-                try {
-                    byte[] screenshot = ((TakesScreenshot) driver)
-                            .getScreenshotAs(OutputType.BYTES);
-                    Allure.getLifecycle()
-                            .addAttachment("Failure Screenshot", "image/png", "png", screenshot);
-                } catch (Exception e) {
-                    System.out.println("Ошибка при создании скриншота: " + e.getMessage());
-                }
-            }
-        }
+        attachScreenshot(result);
     }
 
     @Override
     public void onTestSkipped(ITestResult result) {
         System.out.println("SKIPPED: " + result.getName());
+        attachScreenshot(result);
+    }
+
+    private void attachScreenshot(ITestResult result) {
+        Object testClass = result.getInstance();
+        if (testClass instanceof BaseTest baseTest) {
+            WebDriver driver = baseTest.getDriver();
+            if (driver != null) {
+                takeScreenshot(driver);
+            }
+        }
+    }
+
+    @Attachment(value = "Скриншот", type = "image/png")
+    public byte[] takeScreenshot(WebDriver driver) {
+        try {
+            return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        } catch (Exception e) {
+            System.err.println("Не удалось сделать скриншот: " + e.getMessage());
+            return new byte[0];
+        }
     }
 }

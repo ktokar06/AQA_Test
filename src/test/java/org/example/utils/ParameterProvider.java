@@ -21,12 +21,12 @@ public final class ParameterProvider {
      */
     private ParameterProvider() {
         try {
-            parameters = new HashMap<>();
+            this.parameters = new HashMap<>();
             Properties prop = new Properties();
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream(CONFIG_PATH);
             prop.load(inputStream);
             prop.stringPropertyNames()
-                    .forEach(key -> parameters.put(key, prop.getProperty(key)));
+                    .forEach(key -> this.parameters.put(key, prop.getProperty(key)));
         } catch (Exception e) {
             throw new RuntimeException("Ошибка при загрузке конфигурации", e);
         }

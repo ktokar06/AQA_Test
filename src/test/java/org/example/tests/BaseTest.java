@@ -1,15 +1,18 @@
 package org.example.tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import io.qameta.allure.testng.AllureTestNg;
+import org.example.listeners.TestListener;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.annotations.*;
-import org.example.listeners.TestListener;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
-import java.time.Duration;
-
-@Listeners(TestListener.class)
+@Listeners({AllureTestNg.class, TestListener.class})
 public abstract class BaseTest {
     protected WebDriver driver;
 
@@ -29,11 +32,10 @@ public abstract class BaseTest {
                 WebDriverManager.firefoxdriver().setup();
                 driver = new FirefoxDriver();
             }
-            default -> throw new IllegalArgumentException("Unsupported browser: " + browser);
+            default -> throw new IllegalArgumentException("Неподдерживаемый браузер: " + browser);
         }
 
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
     @AfterMethod

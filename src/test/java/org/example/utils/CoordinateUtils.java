@@ -17,9 +17,7 @@ public final class CoordinateUtils {
         }
 
         return coordinates
-                .replace("Ш", "")
-                .replace("Д", "")
-                .replace(",", "")
+                .replaceAll("[ШД,]", "")
                 .trim()
                 .replace(" ", ", ");
     }

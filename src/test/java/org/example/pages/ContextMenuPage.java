@@ -2,7 +2,6 @@ package org.example.pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -43,17 +42,9 @@ public class ContextMenuPage extends BasePage {
     @Step("Открытие контекстного меню на карте")
     public ContextMenuPage openContextMenuOnMap() {
         waitForElementVisible(driver, mapCanvas, DEFAULT_TIMEOUT);
-
         actions.contextClick(mapCanvas).perform();
-
         waitForElementVisible(driver, contextMenu, DEFAULT_TIMEOUT);
         return this;
-    }
-
-    @Step("Проверка отображения опции 'Импорт области'")
-    public boolean isImportAreaOptionDisplayed() {
-        waitForElementVisible(driver, importAreaOption, DEFAULT_TIMEOUT);
-        return importAreaOption.isDisplayed();
     }
 
     @Step("Выбор опции 'Импорт области' и загрузка файла")
@@ -63,8 +54,6 @@ public class ContextMenuPage extends BasePage {
         String filePath = getFilePathFromResources(fileName);
 
         WebElement input = waitForPresenceOfElement(driver, By.cssSelector("input[type='file']"), DEFAULT_TIMEOUT);
-
-        ((JavascriptExecutor) driver).executeScript("arguments[0].style.display = 'block';", input);
         input.sendKeys(filePath);
 
         waitForElementVisible(driver, areaValue, DEFAULT_TIMEOUT);
@@ -81,21 +70,25 @@ public class ContextMenuPage extends BasePage {
     @Step("Закрытие модального окна выбора слоев")
     public ContextMenuPage closeChooseLayersModal() {
         waitForElementVisible(driver, chooseLayersModal, DEFAULT_TIMEOUT);
-
         click(cancelButton);
-
         waitForElementVisible(driver, areaValue, DEFAULT_TIMEOUT);
         return this;
+    }
+
+    @Step("Ожидание исчезновения экрана загрузки")
+    public ContextMenuPage waitForLoading() {
+        waitForLoadingScreenToDisappear();
+        return this;
+    }
+
+    @Step("Проверка отображения опции 'Импорт области'")
+    public boolean isImportAreaOptionDisplayed() {
+        waitForElementVisible(driver, importAreaOption, DEFAULT_TIMEOUT);
+        return importAreaOption.isDisplayed();
     }
 
     @Step("Получение значения площади")
     public String getAreaValue() {
         return getText(areaValue);
-    }
-
-    @Step("Ожидание исчезновения экрана загрузки и возврат страницы")
-    public ContextMenuPage waitForLoading() {
-        waitForLoadingScreenToDisappear();
-        return this;
     }
 }

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Atlas MCHS Tests" parallel="tests" thread-count="3">
+<suite name="Atlas MCHS Tests" parallel="tests" thread-count="5">
 
     <test name="Chrome Tests">
         <parameter name="browser" value="chrome"/>
         <classes>
-            <class name="org.example.tests.MapTests"/>
+            <class name="org.example.tests.MapLayerTests"/>
+            <class name="org.example.tests.RouteAndSearchTests"/>
             <class name="org.example.tests.ContextMenuTests"/>
         </classes>
     </test>
@@ -13,7 +14,8 @@
     <test name="Firefox Tests">
         <parameter name="browser" value="firefox"/>
         <classes>
-            <class name="org.example.tests.MapTests"/>
+            <class name="org.example.tests.MapLayerTests"/>
+            <class name="org.example.tests.RouteAndSearchTests"/>
             <class name="org.example.tests.ContextMenuTests"/>
         </classes>
     </test>

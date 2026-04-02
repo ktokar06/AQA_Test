@@ -12,22 +12,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 @Epic("Карта МЧС")
-@Feature("Функции карты")
-public class MapTests extends BaseTest {
+@Feature("Маршрут и поиск")
+public class RouteAndSearchTests extends BaseTest {
 
-    @Test(description = "Проверка переключения подложки после включения светлой темы")
-    @Story("Переключение темы карты")
-    @Severity(SeverityLevel.CRITICAL)
-    public void testThemeSwitch() {
-        driver.get(ParameterProvider.get("atlas.url"));
-        MapPage mapPage = new MapPage(driver)
-                .waitForLoading()
-                .switchTheme();
-
-        Assert.assertTrue(mapPage.isLightThemeEnabled(), "Тема не переключилась на светлую");
-    }
-
-    @Test(description = "Проверка построения маршрута и вычисление расстояния")
+    @Test(description = "Проверка построения маршрута и вычисление расстояния маршрута")
     @Story("Маршрут")
     @Severity(SeverityLevel.CRITICAL)
     public void testBuildRoute() {
@@ -41,7 +29,7 @@ public class MapTests extends BaseTest {
         Assert.assertFalse(distance.isEmpty(), "Расстояние маршрута пустое");
     }
 
-    @Test(description = "Проверка результата поиска определённого адреса и перехода на его координаты")
+    @Test(description = "Проверка результата поиска адреса и переход на его координаты")
     @Story("Поиск адреса")
     @Severity(SeverityLevel.CRITICAL)
     public void testSearchAddress() {
@@ -55,16 +43,5 @@ public class MapTests extends BaseTest {
 
         Assert.assertNotNull(cords, "Координаты не отображаются после поиска");
         Assert.assertFalse(cords.isEmpty(), "Координаты пустые после поиска");
-    }
-
-    @Test(description = "Проверка на доступность более двух картографических подложек")
-    @Story("Слои карты")
-    @Severity(SeverityLevel.NORMAL)
-    public void testMapLayersAvailability() {
-        driver.get(ParameterProvider.get("atlas.url"));
-        MapPage mapPage = new MapPage(driver)
-                .waitForLoading();
-
-        Assert.assertTrue(mapPage.areMapLayersAvailable(), "Менее двух подложек доступны");
     }
 }

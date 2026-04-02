@@ -24,8 +24,6 @@
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
     <allure.maven.plugin.version>2.14.0</allure.maven.plugin.version>
-
-    <testngXML>testng.xml</testngXML>
   </properties>
 
   <dependencies>
@@ -90,7 +88,7 @@
         <version>${maven.surefire.plugin.version}</version>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>src/test/resources/${testngXML}</suiteXmlFile>
+            <suiteXmlFile>src/test/resources/suites/testNG.xml</suiteXmlFile>
           </suiteXmlFiles>
           <argLine>
             -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"

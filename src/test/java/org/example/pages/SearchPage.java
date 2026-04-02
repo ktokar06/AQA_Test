@@ -33,9 +33,10 @@ public class SearchPage extends BasePage {
         String convertedAddress = toNumericFormat(address);
         type(searchField, convertedAddress);
 
-        switch (suggestions.isEmpty() ? 0 : 1) {
-            case 0 -> searchField.sendKeys(Keys.ENTER);
-            case 1 -> click(suggestions.get(0));
+        if (!suggestions.isEmpty()) {
+            click(suggestions.get(0));
+        } else {
+            searchField.sendKeys(Keys.ENTER);
         }
 
         actions.moveToElement(mapArea).perform();
@@ -48,7 +49,7 @@ public class SearchPage extends BasePage {
         return getText(coordinatesDisplay);
     }
 
-    @Step("Ожидание исчезновения экрана загрузки и возврат страницы")
+    @Step("Ожидание исчезновения экрана загрузки")
     public SearchPage waitForLoading() {
         waitForLoadingScreenToDisappear();
         return this;

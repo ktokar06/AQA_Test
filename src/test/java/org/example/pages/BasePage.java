@@ -44,7 +44,7 @@ public abstract class BasePage {
     }
 
     @Step("Ожидание исчезновения экрана загрузки")
-    public void waitForLoadingScreenToDisappear() {
+    protected void waitForLoadingScreenToDisappear() {
         By[] loaderSelectors = {
                 By.cssSelector(".spinner"),
                 By.cssSelector(".loader"),

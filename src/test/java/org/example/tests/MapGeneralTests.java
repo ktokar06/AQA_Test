@@ -1,6 +1,10 @@
 package org.example.tests;
 
-import io.qameta.allure.*;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import org.example.pages.MapPage;
 import org.example.pages.SearchPage;
 import org.example.utils.ParameterProvider;

@@ -34,7 +34,7 @@ public class BaseTest {
         options.addArguments("--window-size=1920,1080");
 
         RemoteWebDriver remote = new RemoteWebDriver(
-                new URL("http://seleniuъm:4444/wd/hub"),
+                new URL("http://selenium:4444/wd/hub"),
                 options
         );
         remote.setFileDetector(new LocalFileDetector());

@@ -7,8 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
-import java.util.List;
-
 import static org.example.utils.WaitUtils.waitForElementClickable;
 import static org.example.utils.WaitUtils.waitForElementInvisible;
 import static org.example.utils.WaitUtils.waitForElementVisible;
@@ -43,7 +41,6 @@ public abstract class BasePage {
         return element.getText();
     }
 
-    @Step("Ожидание исчезновения экрана загрузки")
     protected void waitForLoadingScreenToDisappear() {
         By[] loaderSelectors = {
                 By.cssSelector(".spinner"),
@@ -59,13 +56,10 @@ public abstract class BasePage {
         };
 
         for (By selector : loaderSelectors) {
-            List<WebElement> elements = driver.findElements(selector);
+            try {
+                waitForElementInvisible(driver, selector, DEFAULT_TIMEOUT);
+            } catch (Exception e) {
 
-            for (WebElement element : elements) {
-                if (element.isDisplayed()) {
-                    waitForElementInvisible(driver, selector, DEFAULT_TIMEOUT);
-                    break;
-                }
             }
         }
 

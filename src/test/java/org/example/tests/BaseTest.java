@@ -33,10 +33,16 @@ public class BaseTest {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--window-size=1920,1080");
 
+        String host = System.getenv("SELENIUM_HOST");
+        String port = System.getenv("SELENIUM_PORT");
+
+        String url = "http://" + host + ":" + port + "/wd/hub";
+
         RemoteWebDriver remote = new RemoteWebDriver(
-                new URL("http://selenium:4444/wd/hub"),
+                new URL(url),
                 options
         );
+
         remote.setFileDetector(new LocalFileDetector());
         driver = remote;
     }

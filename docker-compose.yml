@@ -1,11 +1,7 @@
-version: "3.9"
-
 services:
   selenium:
     image: selenium/standalone-chrome:latest
     container_name: selenium
-    ports:
-      - "4444:4444"
 
   test-runner:
     build: .
@@ -14,4 +10,7 @@ services:
       - selenium
     volumes:
       - ./target:/app/target
+    environment:
+      - SELENIUM_HOST=${SELENIUM_HOST}
+      - SELENIUM_PORT=${SELENIUM_PORT}
     entrypoint: ""

@@ -101,3 +101,10 @@ mvn clean test
 ```bash
 mvn allure:serve
 ```
+
+## Пример `.env`
+
+```env
+SELENIUM_HOST=selenium
+SELENIUM_PORT=port (например: 4444)
+```

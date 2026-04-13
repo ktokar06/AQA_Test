@@ -1,23 +1,27 @@
-# Используем образ Maven с JDK 17 (Eclipse Temurin)
-FROM maven:3.9.3-eclipse-temurin-17
+# ЭТАП 1: Сборка
+FROM maven:3.9.3-eclipse-temurin-17 AS builder
+WORKDIR /build
 
-# Устанавливаем рабочую директорию внутри контейнера
-WORKDIR /app
-
-# Копируем только pom.xml для первоначального скачивания зависимостей
+# Копируем pom и скачиваем зависимости
 COPY pom.xml .
-
-# Разрешаем зависимости, чтобы кэшировать их на этапе сборки
 RUN mvn dependency:resolve
 
-# Копируем исходный код проекта в контейнер
+# Копируем исходники и собираем проект (включая тесты)
+COPY src ./src
+RUN mvn clean compile test-compile
+
+# ЭТАП 2: Запуск Тестов
+FROM maven:3.9.3-eclipse-temurin-17
+WORKDIR /app
+
+# Копируем собранные классы и зависимости из builder
+COPY --from=builder /build/target ./target
+COPY --from=builder /build/pom.xml .
+
+# Копируем исходники (нужны для Allure отчетов)
 COPY src ./src
 
-# Компилируем тесты (создает target/test-classes/ и копирует ресурсы)
-RUN mvn test-compile
-
-# Создаем директорию для результатов Allure
-RUN mkdir -p target/allure-results
-
-# Команда по умолчанию для запуска тестов при старте контейнера
-CMD ["mvn", "test"]
+# Команда по умолчанию:
+# 1. Запускает тесты
+# 2. Поднимает Allure отчет
+CMD ["sh", "-c", "mvn test && exec mvn allure:serve"]

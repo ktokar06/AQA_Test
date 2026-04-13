@@ -1,16 +1,27 @@
+version: "3.9"
+
 services:
-  selenium:
+  selenium-chrome:
     image: selenium/standalone-chrome:latest
-    container_name: selenium
+    container_name: selenium-chrome
+
+  selenium-firefox:
+    image: selenium/standalone-firefox:latest
+    container_name: selenium-firefox
 
   test-runner:
     build: .
     container_name: test-runner
     depends_on:
-      - selenium
+      - selenium-chrome
+      - selenium-firefox
     volumes:
-      - ./target:/app/target
-    environment:
-      - SELENIUM_HOST=${SELENIUM_HOST}
-      - SELENIUM_PORT=${SELENIUM_PORT}
-    entrypoint: ""
+      - ./target/allure-results:/app/target/allure-results
+
+  allure:
+    image: frankescobar/allure-docker-service
+    container_name: allure-report
+    ports:
+      - "${ALLURE_PORT}:${CONTAINER_PORT}"
+    volumes:
+      - ./target/allure-results:/app/allure-results

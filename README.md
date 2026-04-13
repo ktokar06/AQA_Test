@@ -1,43 +1,64 @@
 # Руководство по запуску тестов
-## 1. Структура проекта
+### BaseTest.java — основные возможности:
+- Настройка WebDriver
+- Два режима работы:
 
-* `src/test/java/org/example/tests/` – папка с тестами
-* `BaseTest.java` – базовый класс для всех тестов
+Docker-режим — через RemoteWebDriver и Selenium-контейнер
 
-    * Содержит настройку `WebDriver`
-    * Может использоваться в двух вариантах:
-
-        1. **Docker-режим** – через `RemoteWebDriver` и Selenium-контейнер
-        2. **Локальный режим** – через `ChromeDriver` или `FirefoxDriver` на машине разработчика
-* `testng.xml` – конфигурация для запуска всех тестов и параллельного запуска
+Локальный режим — через ChromeDriver или FirefoxDriver
 
 ---
 
-## 2. Варианты `BaseTest`
+## 2. Варианты конфигурации BaseTest
+
 ### Docker-режим
 
 ```java
 @BeforeMethod
-public void setUp() throws MalformedURLException {
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments("--headless=new");
-    options.addArguments("--no-sandbox");
-    options.addArguments("--disable-dev-shm-usage");
-    options.addArguments("--window-size=1920,1080");
+@Parameters("browser")
+public void setUp(String browser) throws MalformedURLException {
+    RemoteWebDriver remote;
 
-    RemoteWebDriver remote = new RemoteWebDriver(
-            new URL("http://seleniuъm:4444/wd/hub"),
-            options
-    );
+    switch (browser.toLowerCase()) {
+        case "firefox":
+            FirefoxOptions ffOptions = new FirefoxOptions();
+            ffOptions.addArguments("--headless");
+            ffOptions.addArguments("--width=1920");
+            ffOptions.addArguments("--height=1080");
+
+            remote = new RemoteWebDriver(
+                    new URL("http://selenium-firefox:4444"),
+                    ffOptions
+            );
+            break;
+
+        case "chrome":
+        default:
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--window-size=1920,1080");
+            options.addArguments("--disable-blink-features=AutomationControlled");
+
+            remote = new RemoteWebDriver(
+                    new URL("http://selenium-chrome:4444"),
+                    options
+            );
+            break;
+    }
+
     remote.setFileDetector(new LocalFileDetector());
     driver = remote;
 }
-
 ```
 
-* Используется **только в Docker-среде**
-* Подходит для CI/CD и командной работы
-* Локальный запуск вне Docker приведёт к ошибке подключения к Selenium-контейнеру
+Особенности:
+- Используется только в Docker-среде
+- Подходит для CI/CD и командной работы
+- Локальный запуск вне Docker приведёт к ошибке подключения
+
+---
 
 ### Локальный режим
 
@@ -61,9 +82,10 @@ public void setUp(@Optional("chrome") String browser) {
 }
 ```
 
-* Позволяет запускать тесты локально
-* Поддерживает Chrome и Firefox
-* Можно указывать браузер через параметр TestNG
+Особенности:
+- Позволяет запускать тесты локально
+- Поддерживает Chrome и Firefox
+- Можно указывать браузер через параметр TestNG
 
 ---
 
@@ -71,11 +93,7 @@ public void setUp(@Optional("chrome") String browser) {
 ### Через Docker
 
 ```bash
-# Сборка образов
-docker compose build
-
-# Запуск тестов
-docker compose run --rm test-runner
+docker compose up --build
 ```
 
 ### Локально
@@ -86,25 +104,34 @@ mvn clean test
 ```
 
 ### Через IDE
-* Найти файл `testng.xml`
-* Кликнуть `Run`
-* Запустится параллельный запуск тестов в выбранном браузере
+
+1. Откройте файл `testng.xml`
+2. Нажмите Run
+3. Тесты запустятся параллельно в выбранном браузере
 
 ---
 
-## 4. Отчеты
+## 4. Отчёты (Allure)
 
-* Allure сохраняет результаты в `target/allure-results`
-* Генерация отчета в `target/site/allure-maven-plugin`
-* Для локального быстрого просмотра:
+| Действие                   | Команда / URL |
+|----------------------------|----------------|
+| Результаты сохраняются в   | `target/allure-results` |
+| Генерация отчёта           | `target/site/allure-maven-plugin` |
+| Просмотр отчета в Docker   | `http://localhost:5050/allure-docker-service/projects/default/reports/latest/index.html#suites` |
 
-```bash
-mvn allure:serve
-```
+---
 
-## Пример `.env`
+## 5. Пример .env
 
 ```env
-SELENIUM_HOST=selenium
-SELENIUM_PORT=port (например: 4444)
+ALLURE_PORT=5050
+CONTAINER_PORT=5050
 ```
+
+---
+
+## 6. Примечания
+
+- Для локального режима требуется установленный Chrome или Firefox
+- Docker-режим автоматически поднимает Selenium Grid
+- Allure отчёт доступен только после выполнения тестов

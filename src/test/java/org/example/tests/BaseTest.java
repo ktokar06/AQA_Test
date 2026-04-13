@@ -2,10 +2,12 @@ package org.example.tests;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,22 +28,38 @@ public class BaseTest {
      * так как RemoteWebDriver не сможет подключиться к Selenium-контейнеру.
      */
     @BeforeMethod
-    public void setUp() throws MalformedURLException {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new");
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--window-size=1920,1080");
+    @Parameters("browser")
+    public void setUp(String browser) throws MalformedURLException {
+        RemoteWebDriver remote;
 
-        String host = System.getenv("SELENIUM_HOST");
-        String port = System.getenv("SELENIUM_PORT");
+        switch (browser.toLowerCase()) {
+            case "firefox":
+                FirefoxOptions ffOptions = new FirefoxOptions();
+                ffOptions.addArguments("--headless");
+                ffOptions.addArguments("--width=1920");
+                ffOptions.addArguments("--height=1080");
 
-        String url = "http://" + host + ":" + port + "/wd/hub";
+                remote = new RemoteWebDriver(
+                        new URL("http://selenium-firefox:4444"),
+                        ffOptions
+                );
+                break;
 
-        RemoteWebDriver remote = new RemoteWebDriver(
-                new URL(url),
-                options
-        );
+            case "chrome":
+            default:
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--headless");
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--window-size=1920,1080");
+                options.addArguments("--disable-blink-features=AutomationControlled");
+
+                remote = new RemoteWebDriver(
+                        new URL("http://selenium-chrome:4444"),
+                        options
+                );
+                break;
+        }
 
         remote.setFileDetector(new LocalFileDetector());
         driver = remote;
@@ -54,3 +72,4 @@ public class BaseTest {
         }
     }
 }
+

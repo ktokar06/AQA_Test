@@ -5,6 +5,7 @@
     <test name="Chrome Tests">
         <parameter name="browser" value="chrome"/>
         <classes>
+            <class name="org.example.tests.MapGeneralTests"/>
             <class name="org.example.tests.MapLayerTests"/>
             <class name="org.example.tests.RouteAndSearchTests"/>
             <class name="org.example.tests.ContextMenuTests"/>
@@ -14,6 +15,7 @@
     <test name="Firefox Tests">
         <parameter name="browser" value="firefox"/>
         <classes>
+            <class name="org.example.tests.MapGeneralTests"/>
             <class name="org.example.tests.MapLayerTests"/>
             <class name="org.example.tests.RouteAndSearchTests"/>
             <class name="org.example.tests.ContextMenuTests"/>

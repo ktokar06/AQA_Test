@@ -116,7 +116,6 @@ mvn clean test
 | Действие                   | Команда / URL |
 |----------------------------|----------------|
 | Результаты сохраняются в   | `target/allure-results` |
-| Генерация отчёта           | `target/site/allure-maven-plugin` |
 | Просмотр отчета в Docker   | `http://localhost:5050/allure-docker-service/projects/default/reports/latest/index.html#suites` |
 
 ---

@@ -22,6 +22,6 @@ services:
     image: frankescobar/allure-docker-service
     container_name: allure-report
     ports:
-      - "${ALLURE_PORT}:${CONTAINER_PORT}"
+      - "${ALLURE_PORT:-5050}:${CONTAINER_PORT:-5050}"
     volumes:
       - ./target/allure-results:/app/allure-results

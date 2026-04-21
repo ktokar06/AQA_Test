@@ -34,14 +34,14 @@ public class BaseTest {
 
         switch (browser.toLowerCase()) {
             case "firefox":
-                FirefoxOptions ffOptions = new FirefoxOptions();
-                ffOptions.addArguments("--headless");
-                ffOptions.addArguments("--width=1920");
-                ffOptions.addArguments("--height=1080");
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.addArguments("--headless");
+                firefoxOptions.addArguments("--width=1920");
+                firefoxOptions.addArguments("--height=1080");
 
                 remote = new RemoteWebDriver(
                         new URL("http://selenium-firefox:4444"),
-                        ffOptions
+                        firefoxOptions
                 );
                 break;
 

@@ -28,10 +28,10 @@ public class SearchPage extends BasePage {
         super(driver);
     }
 
-    @Step("Ввод адреса '{address}' и выбор из списка")
-    public SearchPage searchAddress(String address) {
-        String convertedAddress = toNumericFormat(address);
-        type(searchField, convertedAddress);
+    @Step("Ввод координат '{coordinates}' и выбор из списка")
+    public SearchPage searchAddress(String coordinates) {
+        String convertedCoordinates = toNumericFormat(coordinates);
+        type(searchField, convertedCoordinates);
 
         if (!suggestions.isEmpty()) {
             click(suggestions.get(0));
@@ -46,7 +46,7 @@ public class SearchPage extends BasePage {
 
     @Step("Получение координат для проверок")
     public String getCoordinates() {
-        return getText(coordinatesDisplay);
+        return this.getText(coordinatesDisplay);
     }
 
     @Step("Ожидание исчезновения экрана загрузки")

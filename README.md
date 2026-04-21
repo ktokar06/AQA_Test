@@ -47,7 +47,7 @@ mvn clean test
 ### Docker-режим
 
 ```java
-@BeforeMethod
+    @BeforeMethod
 @Parameters("browser")
 public void setUp(String browser) throws MalformedURLException {
   RemoteWebDriver remote;
@@ -71,16 +71,16 @@ public void setUp(String browser) throws MalformedURLException {
     case "chrome":
     default:
       seleniumHost = System.getenv().getOrDefault("CHROME_HOST", "selenium-chrome");
-      ChromeOptions options = new ChromeOptions();
-      options.addArguments("--headless");
-      options.addArguments("--no-sandbox");
-      options.addArguments("--disable-dev-shm-usage");
-      options.addArguments("--window-size=1920,1080");
-      options.addArguments("--disable-blink-features=AutomationControlled");
+      ChromeOptions chromeOptions = new ChromeOptions();
+      chromeOptions.addArguments("--headless");
+      chromeOptions.addArguments("--no-sandbox");
+      chromeOptions.addArguments("--disable-dev-shm-usage");
+      chromeOptions.addArguments("--window-size=1920,1080");
+      chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
 
       remote = new RemoteWebDriver(
               new URL("http://" + seleniumHost + ":" + seleniumPort),
-              options
+              chromeOptions
       );
       break;
   }

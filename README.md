@@ -50,39 +50,39 @@ mvn clean test
 @BeforeMethod
 @Parameters("browser")
 public void setUp(String browser) throws MalformedURLException {
-    RemoteWebDriver remote;
+  RemoteWebDriver remote;
 
-    switch (browser.toLowerCase()) {
-        case "firefox":
-            FirefoxOptions ffOptions = new FirefoxOptions();
-            ffOptions.addArguments("--headless");
-            ffOptions.addArguments("--width=1920");
-            ffOptions.addArguments("--height=1080");
+  switch (browser.toLowerCase()) {
+    case "firefox":
+      FirefoxOptions firefoxOptions = new FirefoxOptions();
+      firefoxOptions.addArguments("--headless");
+      firefoxOptions.addArguments("--width=1920");
+      firefoxOptions.addArguments("--height=1080");
 
-            remote = new RemoteWebDriver(
-                    new URL("http://selenium-firefox:4444"),
-                    ffOptions
-            );
-            break;
+      remote = new RemoteWebDriver(
+              new URL("http://selenium-firefox:4444"),
+              firefoxOptions
+      );
+      break;
 
-        case "chrome":
-        default:
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--window-size=1920,1080");
-            options.addArguments("--disable-blink-features=AutomationControlled");
+    case "chrome":
+    default:
+      ChromeOptions options = new ChromeOptions();
+      options.addArguments("--headless");
+      options.addArguments("--no-sandbox");
+      options.addArguments("--disable-dev-shm-usage");
+      options.addArguments("--window-size=1920,1080");
+      options.addArguments("--disable-blink-features=AutomationControlled");
 
-            remote = new RemoteWebDriver(
-                    new URL("http://selenium-chrome:4444"),
-                    options
-            );
-            break;
-    }
+      remote = new RemoteWebDriver(
+              new URL("http://selenium-chrome:4444"),
+              options
+      );
+      break;
+  }
 
-    remote.setFileDetector(new LocalFileDetector());
-    driver = remote;
+  remote.setFileDetector(new LocalFileDetector());
+  driver = remote;
 }
 ```
 

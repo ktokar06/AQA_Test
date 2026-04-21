@@ -1,6 +1,7 @@
 package org.example.pages;
 
 import io.qameta.allure.Step;
+import org.example.utils.CoordinateUtils;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,7 +9,6 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-import static org.example.utils.CoordinateUtils.toNumericFormat;
 import static org.example.utils.WaitUtils.waitForElementVisible;
 
 public class SearchPage extends BasePage {
@@ -30,7 +30,7 @@ public class SearchPage extends BasePage {
 
     @Step("Ввод координат '{coordinates}' и выбор из списка")
     public SearchPage searchAddress(String coordinates) {
-        String convertedCoordinates = toNumericFormat(coordinates);
+        String convertedCoordinates = CoordinateUtils.toNumericFormat(coordinates);
         type(searchField, convertedCoordinates);
 
         if (!suggestions.isEmpty()) {

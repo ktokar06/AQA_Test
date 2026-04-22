@@ -23,7 +23,7 @@ docker compose up
 - Генерация и запуск Allure-отчёта
 
 После завершения отчёт доступен по адресу:  
-`http://localhost:5050/allure-docker-service/projects/default/reports/latest/index.html#suites`
+`http://127.0.0.1:5050/allure-docker-service/projects/default/reports/latest/index.html#`
 
 ---
 
@@ -47,30 +47,26 @@ mvn clean test
 ### Docker-режим
 
 ```java
-    @BeforeMethod
+@BeforeMethod
 @Parameters("browser")
 public void setUp(String browser) throws MalformedURLException {
   RemoteWebDriver remote;
-  String seleniumPort = System.getenv().getOrDefault("SELENIUM_PORT", "4444");
-  String seleniumHost;
 
   switch (browser.toLowerCase()) {
     case "firefox":
-      seleniumHost = System.getenv().getOrDefault("FIREFOX_HOST", "selenium-firefox");
       FirefoxOptions firefoxOptions = new FirefoxOptions();
       firefoxOptions.addArguments("--headless");
       firefoxOptions.addArguments("--width=1920");
       firefoxOptions.addArguments("--height=1080");
 
       remote = new RemoteWebDriver(
-              new URL("http://" + seleniumHost + ":" + seleniumPort),
+              new URL("http://selenium-firefox:4444"),
               firefoxOptions
       );
       break;
 
     case "chrome":
     default:
-      seleniumHost = System.getenv().getOrDefault("CHROME_HOST", "selenium-chrome");
       ChromeOptions chromeOptions = new ChromeOptions();
       chromeOptions.addArguments("--headless");
       chromeOptions.addArguments("--no-sandbox");
@@ -79,7 +75,7 @@ public void setUp(String browser) throws MalformedURLException {
       chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
 
       remote = new RemoteWebDriver(
-              new URL("http://" + seleniumHost + ":" + seleniumPort),
+              new URL("http://selenium-chrome:4444"),
               chromeOptions
       );
       break;
@@ -131,25 +127,4 @@ public void setUp(@Optional("chrome") String browser) {
 | Действие | Команда / URL |
 |----------|----------------|
 | Результаты сохраняются в | `target/allure-results` |
-| Просмотр отчета в Docker | `http://localhost:5050/allure-docker-service/projects/default/reports/latest/index.html#suites` |
-
----
-
-## 5. Пример .env
-
-```env
-ALLURE_PORT=5050
-CONTAINER_PORT=5050
-
-CHROME_HOST=selenium-chrome
-FIREFOX_HOST=selenium-firefox
-SELENIUM_PORT=4444
-```
-
----
-
-## 6. Примечания
-
-- Для локального режима требуется установленный Chrome или Firefox
-- Docker-режим автоматически поднимает Selenium Grid
-- Allure отчёт доступен только после выполнения тестов
+| Просмотр отчета в Docker | `http://127.0.0.1:5050/allure-docker-service/projects/default/reports/latest/index.html#` |

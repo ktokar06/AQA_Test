@@ -4,10 +4,14 @@ services:
   selenium-chrome:
     image: selenium/standalone-chrome:latest
     container_name: selenium-chrome
+    expose:
+      - "4444"
 
   selenium-firefox:
     image: selenium/standalone-firefox:latest
     container_name: selenium-firefox
+    expose:
+      - "4444"
 
   test-runner:
     build: .
@@ -15,6 +19,10 @@ services:
     depends_on:
       - selenium-chrome
       - selenium-firefox
+    environment:
+      - CHROME_HOST=selenium-chrome
+      - FIREFOX_HOST=selenium-firefox
+      - SELENIUM_PORT=4444
     volumes:
       - ./target/allure-results:/app/target/allure-results
 
@@ -22,6 +30,8 @@ services:
     image: frankescobar/allure-docker-service
     container_name: allure-report
     ports:
-      - "${ALLURE_PORT:-5050}:${CONTAINER_PORT:-5050}"
+      - "127.0.0.1:5050:5050"
     volumes:
       - ./target/allure-results:/app/allure-results
+      # Порт открыт ТОЛЬКО на 127.0.0.1 (localhost)
+      # Извне сети (с других машин) подключиться нельзя

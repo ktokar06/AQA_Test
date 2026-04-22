@@ -31,26 +31,22 @@ public class BaseTest {
     @Parameters("browser")
     public void setUp(String browser) throws MalformedURLException {
         RemoteWebDriver remote;
-        String seleniumPort = System.getenv().getOrDefault("SELENIUM_PORT", "4444");
-        String seleniumHost;
 
         switch (browser.toLowerCase()) {
             case "firefox":
-                seleniumHost = System.getenv().getOrDefault("FIREFOX_HOST", "selenium-firefox");
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
                 firefoxOptions.addArguments("--headless");
                 firefoxOptions.addArguments("--width=1920");
                 firefoxOptions.addArguments("--height=1080");
 
                 remote = new RemoteWebDriver(
-                        new URL("http://" + seleniumHost + ":" + seleniumPort),
+                        new URL("http://selenium-firefox:4444"),
                         firefoxOptions
                 );
                 break;
 
             case "chrome":
             default:
-                seleniumHost = System.getenv().getOrDefault("CHROME_HOST", "selenium-chrome");
                 ChromeOptions chromeOptions = new ChromeOptions();
                 chromeOptions.addArguments("--headless");
                 chromeOptions.addArguments("--no-sandbox");
@@ -59,7 +55,7 @@ public class BaseTest {
                 chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
 
                 remote = new RemoteWebDriver(
-                        new URL("http://" + seleniumHost + ":" + seleniumPort),
+                        new URL("http://selenium-chrome:4444"),
                         chromeOptions
                 );
                 break;

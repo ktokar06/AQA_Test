@@ -4,14 +4,10 @@ services:
   selenium-chrome:
     image: selenium/standalone-chrome:latest
     container_name: selenium-chrome
-    expose:
-      - "4444"
 
   selenium-firefox:
     image: selenium/standalone-firefox:latest
     container_name: selenium-firefox
-    expose:
-      - "4444"
 
   test-runner:
     build: .

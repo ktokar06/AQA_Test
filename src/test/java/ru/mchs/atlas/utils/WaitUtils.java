@@ -1,4 +1,4 @@
-package org.example.utils;
+package ru.mchs.atlas.utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,13 +10,13 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * Класс для ожидания различных состояний элементов на веб-странице.
+ * <p>Класс для ожидания различных состояний элементов на веб-странице.</p>
  */
 public final class WaitUtils {
 
     /**
      * Ожидает, пока элемент станет видимым.
-     *
+     * <p>
      * @param driver  экземпляр WebDriver
      * @param element веб-элемент для ожидания
      * @param timeout время ожидания в секундах
@@ -29,7 +29,7 @@ public final class WaitUtils {
 
     /**
      * Ожидает, пока элемент станет кликабельным.
-     *
+     * <p>
      * @param driver  экземпляр WebDriver
      * @param element веб-элемент для ожидания
      * @param timeout время ожидания в секундах
@@ -42,7 +42,7 @@ public final class WaitUtils {
 
     /**
      * Ожидает, пока элемент появится в DOM
-     *
+     * <p>
      * @param driver  экземпляр WebDriver
      * @param locator локатор элемента
      * @param timeout время ожидания в секундах
@@ -55,7 +55,7 @@ public final class WaitUtils {
 
     /**
      * Ожидает, пока все элементы в списке станут видимыми.
-     *
+     * <p>
      * @param driver   экземпляр WebDriver
      * @param elements список веб-элементов для ожидания
      * @param timeout  время ожидания в секундах
@@ -68,7 +68,7 @@ public final class WaitUtils {
 
     /**
      * Ожидает, пока элемент станет невидимым или исчезнет из DOM
-     *
+     * <p>
      * @param driver  экземпляр WebDriver
      * @param locator локатор элемента
      * @param timeout время ожидания в секундах

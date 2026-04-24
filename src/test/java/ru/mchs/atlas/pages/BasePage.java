@@ -1,4 +1,4 @@
-package org.example.pages;
+package ru.mchs.atlas.pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -7,15 +7,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
-import static org.example.utils.WaitUtils.waitForElementClickable;
-import static org.example.utils.WaitUtils.waitForElementInvisible;
-import static org.example.utils.WaitUtils.waitForElementVisible;
-import static org.example.utils.WaitUtils.waitForPresenceOfElement;
+import ru.mchs.atlas.utils.WaitUtils;
 
 public abstract class BasePage {
+    protected static final int DEFAULT_TIMEOUT = 15;
     protected WebDriver driver;
     protected Actions actions;
-    protected static final int DEFAULT_TIMEOUT = 15;
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -25,19 +22,19 @@ public abstract class BasePage {
 
     @Step("Клик по элементу")
     protected void click(WebElement element) {
-        waitForElementClickable(driver, element, DEFAULT_TIMEOUT).click();
+        WaitUtils.waitForElementClickable(driver, element, DEFAULT_TIMEOUT).click();
     }
 
     @Step("Ввод текста: '{text}'")
     protected void type(WebElement element, String text) {
-        waitForElementVisible(driver, element, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, element, DEFAULT_TIMEOUT);
         element.clear();
         element.sendKeys(text);
     }
 
     @Step("Получение текста")
     protected String getText(WebElement element) {
-        waitForElementVisible(driver, element, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, element, DEFAULT_TIMEOUT);
         return element.getText();
     }
 
@@ -57,12 +54,12 @@ public abstract class BasePage {
 
         for (By selector : loaderSelectors) {
             try {
-                waitForElementInvisible(driver, selector, DEFAULT_TIMEOUT);
+                WaitUtils.waitForElementInvisible(driver, selector, DEFAULT_TIMEOUT);
             } catch (Exception e) {
 
             }
         }
 
-        waitForPresenceOfElement(driver, By.cssSelector(".mapboxgl-canvas"), DEFAULT_TIMEOUT);
+        WaitUtils.waitForPresenceOfElement(driver, By.cssSelector(".mapboxgl-canvas"), DEFAULT_TIMEOUT);
     }
 }

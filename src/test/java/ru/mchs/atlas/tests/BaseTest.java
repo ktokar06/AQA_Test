@@ -1,16 +1,12 @@
 package ru.mchs.atlas.tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import java.net.MalformedURLException;
@@ -33,20 +29,40 @@ public class BaseTest {
      */
     @BeforeMethod
     @Parameters("browser")
-    public void setUp(@Optional("chrome") String browser) {
+    public void setUp(String browser) throws MalformedURLException {
+        RemoteWebDriver remote;
+
         switch (browser.toLowerCase()) {
-            case "chrome" -> {
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-            }
-            case "firefox" -> {
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-            }
-            default -> throw new IllegalArgumentException("Неподдерживаемый браузер: " + browser);
+            case "firefox":
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.addArguments("--headless");
+                firefoxOptions.addArguments("--width=1920");
+                firefoxOptions.addArguments("--height=1080");
+
+                remote = new RemoteWebDriver(
+                        new URL("http://selenium-firefox:4444"),
+                        firefoxOptions
+                );
+                break;
+
+            case "chrome":
+            default:
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.addArguments("--headless");
+                chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--disable-dev-shm-usage");
+                chromeOptions.addArguments("--window-size=1920,1080");
+                chromeOptions.addArguments("--disable-blink-features=AutomationControlled");
+
+                remote = new RemoteWebDriver(
+                        new URL("http://selenium-chrome:4444"),
+                        chromeOptions
+                );
+                break;
         }
 
-        driver.manage().window().maximize();
+        remote.setFileDetector(new LocalFileDetector());
+        driver = remote;
     }
 
     @AfterMethod

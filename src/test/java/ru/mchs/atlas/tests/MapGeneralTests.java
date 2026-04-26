@@ -1,13 +1,12 @@
-package org.example.tests;
+package ru.mchs.atlas.tests;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
-import org.example.pages.MapPage;
-import org.example.pages.SearchPage;
-import org.example.utils.ParameterProvider;
+import io.qameta.allure.*;
+import ru.mchs.atlas.pages.MapPage;
+import ru.mchs.atlas.pages.MapEventsPage;
+import ru.mchs.atlas.pages.SearchPage;
+import ru.mchs.atlas.pages.TouristRoutesPage;
+import ru.mchs.atlas.pages.TimelinePage;
+import ru.mchs.atlas.utils.ParameterProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -59,12 +58,12 @@ public class MapGeneralTests extends BaseTest {
         searchPage.waitForLoading()
                 .searchAddress(ParameterProvider.get("search.address"));
 
-        MapPage mapPage = new MapPage(driver);
-        mapPage.waitForLoading()
+        MapEventsPage mapEventsPage = new MapEventsPage(driver);
+        mapEventsPage.waitForLoading()
                 .enableEventLayers()
                 .openEvent();
 
-        Assert.assertTrue(mapPage.areEventsDisplayed() ? mapPage.isEventOpened() : true, "Ошибка: событие не открылось на карте");
+        Assert.assertTrue(!mapEventsPage.areEventsDisplayed() || mapEventsPage.isEventOpened(), "Ошибка: событие не открылось на карте");
     }
 
     @Test(description = "Проверка отображения туристического маршрута 'Кроноцкий заповедник'")
@@ -72,14 +71,14 @@ public class MapGeneralTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void testTouristRouteDisplayed() {
         driver.get(ParameterProvider.get("atlas.url"));
-        MapPage mapPage = new MapPage(driver);
+        TouristRoutesPage touristRoutesPage = new TouristRoutesPage(driver);
 
-        mapPage.waitForLoading()
+        touristRoutesPage.waitForLoading()
                 .openRoutesTab()
                 .selectKronotskyReserve()
                 .waitForRouteInfo();
 
-        Assert.assertTrue(mapPage.isRouteInfoDisplayed(), "Информация о маршруте 'Кроноцкий заповедник' не отображается");
+        Assert.assertTrue(touristRoutesPage.isRouteInfoDisplayed(), "Информация о маршруте 'Кроноцкий заповедник' не отображается");
     }
 
     @Test(description = "Выбор даты на таймлайне и проверка обновления данных")
@@ -87,10 +86,10 @@ public class MapGeneralTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void testSelectTimelineDate() {
         driver.get(ParameterProvider.get("atlas.url"));
-        MapPage mapPage = new MapPage(driver)
+        TimelinePage timelinePage = new TimelinePage(driver)
                 .waitForLoading()
                 .selectTimelineDate();
 
-        Assert.assertTrue(mapPage.isTimelineDateDisplayed(), "Дата на таймлайне не изменилась");
+        Assert.assertTrue(timelinePage.isTimelineDateDisplayed(), "Дата на таймлайне не изменилась");
     }
 }

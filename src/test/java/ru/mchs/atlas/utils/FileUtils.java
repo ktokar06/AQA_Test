@@ -1,4 +1,4 @@
-package org.example.utils;
+package ru.mchs.atlas.utils;
 
 import java.io.File;
 import java.net.URL;
@@ -10,12 +10,12 @@ import static java.nio.file.Files.readAllBytes;
 import static java.nio.file.Files.writeString;
 
 /**
- * Класс для работы с файлами
+ * <p>Класс для работы с файлами</p>
  */
 public final class FileUtils {
 
     /**
-     * Создает файл с координатами
+     * <p>Создает файл с координатами</p>
      *
      * @param coordinates координаты для сохранения
      * @return созданный файл
@@ -33,7 +33,7 @@ public final class FileUtils {
     }
 
     /**
-     * Читает содержимое файла
+     * <p>Читает содержимое файла</p>
      *
      * @param file файл для чтения
      * @return массив байтов с содержимым файла
@@ -48,7 +48,7 @@ public final class FileUtils {
     }
 
     /**
-     * Получает путь к файлу из директории resources
+     * <p>Получает путь к файлу из директории resources</p>
      *
      * @param fileName имя файла в resources
      * @return абсолютный путь к файлу

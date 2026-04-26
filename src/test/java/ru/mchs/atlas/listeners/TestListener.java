@@ -1,7 +1,7 @@
-package org.example.listeners;
+package ru.mchs.atlas.listeners;
 
 import io.qameta.allure.Attachment;
-import org.example.tests.BaseTest;
+import ru.mchs.atlas.tests.BaseTest;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;

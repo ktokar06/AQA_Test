@@ -1,4 +1,4 @@
-package org.example.pages;
+package ru.mchs.atlas.pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
@@ -6,9 +6,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import static org.example.utils.FileUtils.getFilePathFromResources;
-import static org.example.utils.WaitUtils.waitForElementVisible;
-import static org.example.utils.WaitUtils.waitForPresenceOfElement;
+import ru.mchs.atlas.utils.FileUtils;
+import ru.mchs.atlas.utils.WaitUtils;
 
 public class ContextMenuPage extends BasePage {
     @FindBy(css = ".mapboxgl-canvas")
@@ -41,37 +40,46 @@ public class ContextMenuPage extends BasePage {
 
     @Step("Открытие контекстного меню на карте")
     public ContextMenuPage openContextMenuOnMap() {
-        waitForElementVisible(driver, mapCanvas, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, mapCanvas, DEFAULT_TIMEOUT);
         actions.contextClick(mapCanvas).perform();
-        waitForElementVisible(driver, contextMenu, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, contextMenu, DEFAULT_TIMEOUT);
         return this;
     }
 
+    /**
+     * Выбор опции 'Импорт области' и загрузка файла.
+     * <p>
+     * <b>КОСТЫЛЬ:</b> Selenium не умеет взаимодействовать с нативным диалогом выбора файла ОС.
+     * Путь к файлу отправляется напрямую в скрытый {@code <input type="file">}
+     *
+     * @param fileName имя файла в resources
+     * @return текущая страница ContextMenuPage
+     */
     @Step("Выбор опции 'Импорт области' и загрузка файла")
     public ContextMenuPage selectImportAreaAndUploadFile(String fileName) {
         click(importAreaOption);
 
-        String filePath = getFilePathFromResources(fileName);
+        String filePath = FileUtils.getFilePathFromResources(fileName);
 
-        WebElement input = waitForPresenceOfElement(driver, By.cssSelector("input[type='file']"), DEFAULT_TIMEOUT);
+        WebElement input = WaitUtils.waitForPresenceOfElement(driver, By.cssSelector("input[type='file']"), DEFAULT_TIMEOUT);
         input.sendKeys(filePath);
 
-        waitForElementVisible(driver, areaValue, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, areaValue, DEFAULT_TIMEOUT);
         return this;
     }
 
     @Step("Копирование координат из контекстного меню")
     public String copyCoordinates() {
         click(copyCoordinatesOption);
-        waitForElementVisible(driver, coordinatesDisplay, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, coordinatesDisplay, DEFAULT_TIMEOUT);
         return getText(coordinatesDisplay);
     }
 
     @Step("Закрытие модального окна выбора слоев")
     public ContextMenuPage closeChooseLayersModal() {
-        waitForElementVisible(driver, chooseLayersModal, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, chooseLayersModal, DEFAULT_TIMEOUT);
         click(cancelButton);
-        waitForElementVisible(driver, areaValue, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, areaValue, DEFAULT_TIMEOUT);
         return this;
     }
 
@@ -83,7 +91,7 @@ public class ContextMenuPage extends BasePage {
 
     @Step("Проверка отображения опции 'Импорт области'")
     public boolean isImportAreaOptionDisplayed() {
-        waitForElementVisible(driver, importAreaOption, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, importAreaOption, DEFAULT_TIMEOUT);
         return importAreaOption.isDisplayed();
     }
 

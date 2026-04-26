@@ -1,14 +1,10 @@
-package org.example.tests;
+package ru.mchs.atlas.tests;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
-import org.example.pages.ContextMenuPage;
-import org.example.pages.SearchPage;
-import org.example.utils.FileUtils;
-import org.example.utils.ParameterProvider;
+import io.qameta.allure.*;
+import ru.mchs.atlas.pages.ContextMenuPage;
+import ru.mchs.atlas.pages.SearchPage;
+import ru.mchs.atlas.utils.FileUtils;
+import ru.mchs.atlas.utils.ParameterProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

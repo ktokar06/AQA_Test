@@ -1,13 +1,9 @@
-package org.example.tests;
+package ru.mchs.atlas.tests;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
-import org.example.pages.MapPage;
-import org.example.pages.SearchPage;
-import org.example.utils.ParameterProvider;
+import io.qameta.allure.*;
+import ru.mchs.atlas.pages.RoutesPage;
+import ru.mchs.atlas.pages.SearchPage;
+import ru.mchs.atlas.utils.ParameterProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -20,11 +16,12 @@ public class RouteAndSearchTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void testBuildRoute() {
         driver.get(ParameterProvider.get("atlas.url"));
-        MapPage mapPage = new MapPage(driver)
+        RoutesPage routesPage = new RoutesPage(driver)
                 .waitForLoading()
+                .openRoutesTab()
                 .buildRoute();
 
-        String distance = mapPage.getRouteDistance();
+        String distance = routesPage.getRouteDistance();
         Assert.assertNotNull(distance, "Расстояние маршрута не отображается");
         Assert.assertFalse(distance.isEmpty(), "Расстояние маршрута пустое");
     }

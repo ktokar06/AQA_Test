@@ -1,12 +1,8 @@
-package org.example.tests;
+package ru.mchs.atlas.tests;
 
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.SeverityLevel;
-import io.qameta.allure.Story;
-import org.example.pages.MapPage;
-import org.example.utils.ParameterProvider;
+import io.qameta.allure.*;
+import ru.mchs.atlas.pages.MapLayersPage;
+import ru.mchs.atlas.utils.ParameterProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -19,11 +15,11 @@ public class MapLayerTests extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void testThemeSwitch() {
         driver.get(ParameterProvider.get("atlas.url"));
-        MapPage mapPage = new MapPage(driver)
+        MapLayersPage mapLayersPage = new MapLayersPage(driver)
                 .waitForLoading()
                 .switchTheme();
 
-        Assert.assertTrue(mapPage.isLightThemeEnabled(), "Тема не переключилась на светлую");
+        Assert.assertTrue(mapLayersPage.isLightThemeEnabled(), "Тема не переключилась на светлую");
     }
 
     @Test(description = "Проверка на доступность более двух картографических подложек")
@@ -31,10 +27,10 @@ public class MapLayerTests extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     public void testMapLayersAvailability() {
         driver.get(ParameterProvider.get("atlas.url"));
-        MapPage mapPage = new MapPage(driver)
+        MapLayersPage mapLayersPage = new MapLayersPage(driver)
                 .waitForLoading()
                 .openMapLayersList();
 
-        Assert.assertTrue(mapPage.areMapLayersAvailable(), "Доступно менее двух подложек.");
+        Assert.assertTrue(mapLayersPage.areMapLayersAvailable(), "Доступно менее двух подложек.");
     }
 }

@@ -1,4 +1,4 @@
-package org.example.tests;
+package ru.mchs.atlas.tests;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -21,7 +21,7 @@ public class BaseTest {
 
     /**
      * Настраивает WebDriver для тестов.
-     *
+     * <p>
      * Эта настройка предназначена для запуска только в Docker-среде.
      * Важно: эта конфигурация не поддерживает локальный запуск
      * на машине разработчика. Запуск вне Docker приведёт к ошибке,

@@ -1,15 +1,15 @@
-package org.example.pages;
+package ru.mchs.atlas.pages;
 
 import io.qameta.allure.Step;
-import org.example.utils.CoordinateUtils;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.List;
+import ru.mchs.atlas.utils.CoordinateUtils;
+import ru.mchs.atlas.utils.WaitUtils;
 
-import static org.example.utils.WaitUtils.waitForElementVisible;
+import java.util.List;
 
 public class SearchPage extends BasePage {
     @FindBy(css = ".geocoder-control input")
@@ -40,7 +40,7 @@ public class SearchPage extends BasePage {
         }
 
         actions.moveToElement(mapArea).perform();
-        waitForElementVisible(driver, coordinatesDisplay, DEFAULT_TIMEOUT);
+        WaitUtils.waitForElementVisible(driver, coordinatesDisplay, DEFAULT_TIMEOUT);
         return this;
     }
 

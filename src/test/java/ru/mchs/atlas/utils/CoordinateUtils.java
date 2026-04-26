@@ -1,12 +1,12 @@
-package org.example.utils;
+package ru.mchs.atlas.utils;
 
 /**
- * Класс для работы с координатами.
+ * <p>Класс для работы с координатами.</p>
  */
 public final class CoordinateUtils {
 
     /**
-     * Преобразует координаты в числовой формат для поиска (с запятой)
+     * <p>Преобразует координаты в числовой формат для поиска (с запятой)</p>
      *
      * @param coordinates координаты в формате "XX.XXXXШ, YY.YYYYД"
      * @return координаты в формате "XX.XXXX, YY.YYYY"

@@ -78,4 +78,17 @@ public final class WaitUtils {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
+
+    /**
+     * Ожидает выполнения пользовательского условия
+     * <p>
+     * @param driver экземпляр WebDriver
+     * @param condition условие для проверки
+     * @param timeout время ожидания в секундах
+     * @return true если условие выполнено
+     */
+    public static boolean waitForCondition(WebDriver driver, java.util.function.Function<WebDriver, Boolean> condition, int timeout) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(condition);
+    }
 }

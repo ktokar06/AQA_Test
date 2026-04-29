@@ -29,5 +29,3 @@ services:
       - "127.0.0.1:5050:5050"
     volumes:
       - ./target/allure-results:/app/allure-results
-      # Порт открыт ТОЛЬКО на 127.0.0.1 (localhost)
-      # Извне сети (с других машин) подключиться нельзя

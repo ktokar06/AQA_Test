@@ -2,6 +2,9 @@
 FROM maven:3.9.3-eclipse-temurin-17 AS builder
 WORKDIR /build
 
+# Временная директория для кэша Maven
+ENV MAVEN_OPTS="-Dmaven.repo.local=/tmp/maven-cache"
+
 # Копируем pom и скачиваем зависимости
 COPY pom.xml .
 RUN mvn dependency:resolve
@@ -14,12 +17,15 @@ RUN mvn clean compile test-compile
 FROM maven:3.9.3-eclipse-temurin-17
 WORKDIR /app
 
-# Копируем собранные классы и зависимости из builder
-COPY --from=builder /build/target ./target
-COPY --from=builder /build/pom.xml .
+# Копируем кэш Maven (зависимости + плагины + собранные классы)
+COPY --from=builder /tmp/maven-cache /tmp/maven-cache
 
-# Копируем исходники (нужны для Allure отчетов)
-COPY src ./src
+# Копируем исходники и pom
+COPY --from=builder /build/src /app/src
+COPY --from=builder /build/pom.xml /app/
+
+# Указываем Maven использовать временную директорию
+ENV MAVEN_OPTS="-Dmaven.repo.local=/tmp/maven-cache"
 
 # Команда по умолчанию:
 # 1. Запускает тесты

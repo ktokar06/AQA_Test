@@ -4,12 +4,10 @@ services:
   selenium-chrome:
     image: selenium/standalone-chrome:latest
     container_name: selenium-chrome
-    shm_size: '2g'
 
   selenium-firefox:
     image: selenium/standalone-firefox:latest
     container_name: selenium-firefox
-    shm_size: '2g'
 
   test-runner:
     build: .
@@ -22,7 +20,6 @@ services:
       - FIREFOX_HOST=selenium-firefox
       - SELENIUM_PORT=4444
     volumes:
-      - maven-cache:/tmp/maven-cache
       - ./target/allure-results:/app/target/allure-results
 
   allure:
@@ -31,8 +28,4 @@ services:
     ports:
       - "127.0.0.1:5050:5050"
     volumes:
-      - maven-cache:/tmp/maven-cache
       - ./target/allure-results:/app/allure-results
-
-volumes:
-  maven-cache:

@@ -4,7 +4,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import ru.mchs.atlas.utils.WaitUtils;
@@ -37,21 +36,41 @@ public class TimelinePage extends BasePage {
         click(timelineControl);
 
         WaitUtils.waitForElementVisible(driver, startDatePicker, DEFAULT_TIMEOUT);
+        click(startDatePicker);
 
-        Actions actions = new Actions(driver);
-        actions.moveToElement(startDatePicker).perform();
+        WaitUtils.waitForCondition(driver, d -> {
+            try {
+                WebElement popover = d.findElement(By.cssSelector(".vc-popover-content-wrapper"));
+                return popover.isDisplayed() && !popover.getText().isEmpty();
+            } catch (Exception e) {
+                return false;
+            }
+        }, DEFAULT_TIMEOUT);
 
-        WaitUtils.waitForElementVisible(driver, calendarContainer, DEFAULT_TIMEOUT);
+        WebElement calendarContainer = driver.findElement(By.cssSelector(".vc-popover-content-wrapper"));
 
-        for (WebElement date : calendarDates) {
-            if (date.getText().matches("\\d+")) {
-                WaitUtils.waitForElementClickable(driver, date, DEFAULT_TIMEOUT);
-                click(date);
-                break;
+        boolean dateSelected = false;
+        int attempts = 0;
+
+        while (!dateSelected && attempts < 3) {
+            try {
+                List<WebElement> availableDates = calendarContainer.findElements(By.xpath(".//*[text() and string-length(text()) > 0]"));
+
+                for (WebElement date : availableDates) {
+                    String text = date.getText().trim();
+                    if (text.matches("\\d+") && !text.isEmpty()) {
+                        WaitUtils.waitForElementClickable(driver, date, DEFAULT_TIMEOUT);
+                        click(date);
+                        dateSelected = true;
+                        break;
+                    }
+                }
+            } catch (org.openqa.selenium.StaleElementReferenceException e) {
+                attempts++;
+                calendarContainer = driver.findElement(By.cssSelector(".vc-popover-content-wrapper"));
             }
         }
 
-        WaitUtils.waitForElementInvisible(driver, By.cssSelector(".vc-popover-content-wrapper"), DEFAULT_TIMEOUT);
         WaitUtils.waitForElementVisible(driver, startDateValue, DEFAULT_TIMEOUT);
         return this;
     }

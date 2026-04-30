@@ -24,6 +24,8 @@
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
     <allure.maven.plugin.version>2.14.0</allure.maven.plugin.version>
+    
+    <executor.json.path>./target/allure-results/executor.json</executor.json.path>
 
     <block.images>true</block.images>
     <block.fonts>true</block.fonts>
@@ -114,6 +116,7 @@
 
           <systemPropertyVariables>
             <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+            <executor.json.path>${executor.json.path}</executor.json.path>
             <block.images>${block.images}</block.images>
             <block.fonts>${block.fonts}</block.fonts>
             <block.css>${block.css}</block.css>
@@ -123,6 +126,8 @@
             <block.social>${block.social}</block.social>
             <block.advert>${block.advert}</block.advert>
           </systemPropertyVariables>
+          <forkCount>1</forkCount>
+          <reuseForks>false</reuseForks>
         </configuration>
       </plugin>
 

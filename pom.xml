@@ -24,12 +24,26 @@
     <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
     <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
     <allure.maven.plugin.version>2.14.0</allure.maven.plugin.version>
+
+    <block.images>true</block.images>
+    <block.fonts>true</block.fonts>
+    <block.css>false</block.css>
+    <block.media>true</block.media>
+    <block.analytics>true</block.analytics>
+    <block.metrika>true</block.metrika>
+    <block.social>true</block.social>
+    <block.advert>true</block.advert>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
+      <version>${selenium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-devtools-v130</artifactId>
       <version>${selenium.version}</version>
     </dependency>
     <dependency>
@@ -61,6 +75,11 @@
       <artifactId>slf4j-simple</artifactId>
       <version>${slf4j.version}</version>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>33.0.0-jre</version>
     </dependency>
   </dependencies>
 
@@ -95,6 +114,14 @@
 
           <systemPropertyVariables>
             <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+            <block.images>${block.images}</block.images>
+            <block.fonts>${block.fonts}</block.fonts>
+            <block.css>${block.css}</block.css>
+            <block.media>${block.media}</block.media>
+            <block.analytics>${block.analytics}</block.analytics>
+            <block.metrika>${block.metrika}</block.metrika>
+            <block.social>${block.social}</block.social>
+            <block.advert>${block.advert}</block.advert>
           </systemPropertyVariables>
         </configuration>
       </plugin>

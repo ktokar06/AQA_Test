@@ -9,6 +9,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
+import ru.mchs.atlas.utils.NetworkBlocker;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,6 +42,8 @@ public class BaseTest {
                 firefoxOptions.addArguments("--width=1920");
                 firefoxOptions.addArguments("--height=1080");
 
+                NetworkBlocker.blockFirefox(firefoxOptions);
+
                 remote = new RemoteWebDriver(
                         new URL("http://selenium-firefox:4444"),
                         firefoxOptions
@@ -61,6 +64,8 @@ public class BaseTest {
                         new URL("http://selenium-chrome:4444"),
                         chromeOptions
                 );
+
+                NetworkBlocker.blockChrome(remote);
                 break;
         }
 

@@ -47,7 +47,7 @@ mvn clean test
 ### Docker-режим
 
 ```java
-@BeforeMethod
+    @BeforeMethod
 @Parameters("browser")
 public void setUp(String browser) throws MalformedURLException {
   RemoteWebDriver remote;
@@ -55,6 +55,7 @@ public void setUp(String browser) throws MalformedURLException {
   switch (browser.toLowerCase()) {
     case "firefox":
       FirefoxOptions firefoxOptions = new FirefoxOptions();
+      firefoxOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
       firefoxOptions.addArguments("--headless");
       firefoxOptions.addArguments("--width=1920");
       firefoxOptions.addArguments("--height=1080");
@@ -68,6 +69,7 @@ public void setUp(String browser) throws MalformedURLException {
     case "chrome":
     default:
       ChromeOptions chromeOptions = new ChromeOptions();
+      chromeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
       chromeOptions.addArguments("--headless");
       chromeOptions.addArguments("--no-sandbox");
       chromeOptions.addArguments("--disable-dev-shm-usage");

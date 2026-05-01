@@ -14,12 +14,8 @@ RUN mvn clean compile test-compile
 FROM maven:3.9.3-eclipse-temurin-17
 WORKDIR /app
 
-# Копируем собранные классы и зависимости из builder
-COPY --from=builder /build/target ./target
-COPY --from=builder /build/pom.xml .
-
-# Копируем исходники (нужны для Allure отчетов)
-COPY src ./src
+# Копируем всё собранное из builder
+COPY --from=builder /build/ /app/
 
 # Команда по умолчанию:
 # 1. Запускает тесты

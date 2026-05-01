@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Класс для блокировки сетевых запросов в браузерах.
  */
-public class NetworkBlocker {
+public final class NetworkBlocker {
 
     /**
      * Блокирует загрузку ресурсов в Chrome через Chrome DevTools Protocol.

@@ -47,7 +47,7 @@ mvn clean test
 ### Docker-режим
 
 ```java
-    @BeforeMethod
+@BeforeMethod
 @Parameters("browser")
 public void setUp(String browser) throws MalformedURLException {
   RemoteWebDriver remote;
@@ -59,6 +59,8 @@ public void setUp(String browser) throws MalformedURLException {
       firefoxOptions.addArguments("--headless");
       firefoxOptions.addArguments("--width=1920");
       firefoxOptions.addArguments("--height=1080");
+
+      NetworkBlocker.blockFirefox(firefoxOptions);
 
       remote = new RemoteWebDriver(
               new URL("http://selenium-firefox:4444"),
@@ -80,6 +82,8 @@ public void setUp(String browser) throws MalformedURLException {
               new URL("http://selenium-chrome:4444"),
               chromeOptions
       );
+
+      NetworkBlocker.blockChrome(remote);
       break;
   }
 

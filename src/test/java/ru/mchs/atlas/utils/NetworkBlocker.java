@@ -10,13 +10,13 @@ import org.openqa.selenium.devtools.v130.network.Network;
 import java.util.Optional;
 
 /**
- * Класс для блокировки сетевых запросов в браузерах.
+ * Класс для блокировки сетевых запросов в браузерах с использованием белого списка.
  */
 public final class NetworkBlocker {
 
     /**
-     * Блокирует загрузку ресурсов в Chrome через Chrome DevTools Protocol.
-     * Блокируются: изображения, шрифты, медиафайлы, аналитика, метрика, соцсети.
+     * Блокирует все ресурсы в Chrome через Chrome DevTools Protocol,
+     * разрешает только те URL, которые указаны в белом списке.
      *
      * @param driver экземпляр ChromeDriver
      * @throws IllegalArgumentException если driver не является ChromeDriver
@@ -27,20 +27,29 @@ public final class NetworkBlocker {
         devTools.createSession();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
 
-        devTools.send(Network.setBlockedURLs(ImmutableList.of(
-                "*.jpg", "*.jpeg", "*.png", "*.gif", "*.svg", "*.webp", "*.ico",
-                "*.woff", "*.woff2", "*.ttf", "*.eot", "*.otf",
-                "*google-analytics.com*", "*googletagmanager.com*", "*doubleclick.net*",
+        devTools.send(Network.setBlockedURLs(ImmutableList.of("*")));
 
-                "*mc.yandex.ru*",
-                "*.mp4", "*.mp3", "*.webm", "*.ogg"
+        // TODO: Настроить белый список. Добавьте сюда ссылки, которые вам нужно разрешить для работы.
+        // Пример:
+        // devTools.send(Network.setBlockedURLs(ImmutableList.of(
+        //     "https://fonts.googleapis.com/*",   // Разрешаем шрифты с Google Fonts
+        //     "https://cdn.jsdelivr.net/*",       // Разрешаем загрузку библиотек с jsDelivr
+        //     "https://mytrustedcdn.com/*",       // Разрешаем загрузку с доверенного CDN
+        //     "*google-analytics.com*",          // Разрешаем аналитику от Google
+        //     "*important-images.com*"           // Разрешаем изображения с вашего внешнего сервиса
+        // )));
+        devTools.send(Network.setBlockedURLs(ImmutableList.of(
+                "https://fonts.googleapis.com/*",
+                "https://cdn.jsdelivr.net/*",
+                "https://mytrustedcdn.com/*",
+                "*google-analytics.com*",
+                "*important-images.com*"
         )));
     }
 
     /**
-     * Настраивает блокировку ресурсов в Firefox через preferences.
-     * Отключает изображения, шрифты, предзагрузку, телеметрию
-     * и блокирует запросы к сервисам аналитики.
+     * Настроить блокировку ресурсов в Firefox через preferences с использованием белого списка.
+     * Отключает все ресурсы, кроме тех, что указаны в белом списке.
      *
      * @param options экземпляр FirefoxOptions для настройки
      * @return настроенный FirefoxOptions с примененными блокировками
@@ -51,6 +60,9 @@ public final class NetworkBlocker {
         options.addPreference("network.http.speculative-parallel-limit", 0);
         options.addPreference("network.dns.disablePrefetch", true);
         options.addPreference("network.prefetch-next", false);
+        options.addPreference("permissions.default.stylesheet", 2);
+
+        options.addPreference("network.http.non-negotiate", true);
 
         return options;
     }

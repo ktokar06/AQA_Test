@@ -26,24 +26,13 @@ public final class NetworkBlocker {
         DevTools devTools = chromeDriver.getDevTools();
         devTools.createSession();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
-
         devTools.send(Network.setBlockedURLs(ImmutableList.of("*")));
-
-        // TODO: Настроить белый список. Добавьте сюда ссылки, которые вам нужно разрешить для работы.
-        // Пример:
-        // devTools.send(Network.setBlockedURLs(ImmutableList.of(
-        //     "https://fonts.googleapis.com/*",   // Разрешаем шрифты с Google Fonts
-        //     "https://cdn.jsdelivr.net/*",       // Разрешаем загрузку библиотек с jsDelivr
-        //     "https://mytrustedcdn.com/*",       // Разрешаем загрузку с доверенного CDN
-        //     "*google-analytics.com*",          // Разрешаем аналитику от Google
-        //     "*important-images.com*"           // Разрешаем изображения с вашего внешнего сервиса
-        // )));
         devTools.send(Network.setBlockedURLs(ImmutableList.of(
-                "https://fonts.googleapis.com/*",
+                "https://atlas.mchs.gov.ru/*",
+                "https://*.mchs.gov.ru/*",
                 "https://cdn.jsdelivr.net/*",
-                "https://mytrustedcdn.com/*",
-                "*google-analytics.com*",
-                "*important-images.com*"
+                "https://fonts.googleapis.com/*",
+                "https://fonts.gstatic.com/*"
         )));
     }
 

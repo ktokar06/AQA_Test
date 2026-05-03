@@ -9,30 +9,22 @@ import org.openqa.selenium.devtools.v130.network.Network;
 
 import java.util.Optional;
 
-/**
- * Класс для блокировки сетевых запросов в браузерах с использованием белого списка.
- */
 public final class NetworkBlocker {
 
     /**
-     * Блокирует все ресурсы в Chrome через Chrome DevTools Protocol,
-     * разрешает только те URL, которые указаны в белом списке.
+     * Блокирует только реальные внешние трекеры, которые мешают тестам.
+     * Шрифты Google и CDN не блокируем, так как Атлас их не использует.
      *
      * @param driver экземпляр ChromeDriver
-     * @throws IllegalArgumentException если driver не является ChromeDriver
      */
     public static void blockChrome(WebDriver driver) {
         ChromeDriver chromeDriver = (ChromeDriver) driver;
         DevTools devTools = chromeDriver.getDevTools();
         devTools.createSession();
         devTools.send(Network.enable(Optional.empty(), Optional.empty(), Optional.empty()));
-        devTools.send(Network.setBlockedURLs(ImmutableList.of("*")));
         devTools.send(Network.setBlockedURLs(ImmutableList.of(
-                "https://atlas.mchs.gov.ru/*",
-                "https://*.mchs.gov.ru/*",
-                "https://cdn.jsdelivr.net/*",
-                "https://fonts.googleapis.com/*",
-                "https://fonts.gstatic.com/*"
+                "https://mc.yandex.ru/*",          // Яндекс Метрика
+                "https://adstat.yandex.ru/*"       // Яндекс Рекламная статистика
         )));
     }
 
@@ -50,9 +42,7 @@ public final class NetworkBlocker {
         options.addPreference("network.dns.disablePrefetch", true);
         options.addPreference("network.prefetch-next", false);
         options.addPreference("permissions.default.stylesheet", 2);
-
         options.addPreference("network.http.non-negotiate", true);
-
         return options;
     }
 }

@@ -1,6 +1,6 @@
 # Глобальные аргументы
-ARG MAVEN_OPTS=-Dmaven.repo.local=/tmp/maven-cache
 ARG MAVEN_REPO_LOCAL=/tmp/maven-cache
+ARG MAVEN_OPTS=-Dmaven.repo.local=${MAVEN_REPO_LOCAL}
 
 # ЭТАП 1: Сборка
 FROM maven:3.9.3-eclipse-temurin-17 AS builder
@@ -23,8 +23,8 @@ RUN mvn test-compile dependency:resolve-plugins ${MAVEN_OPTS}
 FROM maven:3.9.3-eclipse-temurin-17
 ARG MAVEN_OPTS
 ARG MAVEN_REPO_LOCAL
-ENV MAVEN_OPTS=${MAVEN_OPTS}
-ENV MAVEN_REPO_LOCAL=${MAVEN_REPO_LOCAL}
+ENV MAVEN_OPTS=${MAVEN_OPTS} \
+    MAVEN_REPO_LOCAL=${MAVEN_REPO_LOCAL}
 WORKDIR /app
 
 # Копируем кэш Maven (зависимости + плагины + собранные классы)

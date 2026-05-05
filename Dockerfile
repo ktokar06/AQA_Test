@@ -23,8 +23,6 @@ RUN mvn test-compile dependency:resolve-plugins ${MAVEN_OPTS}
 FROM maven:3.9.3-eclipse-temurin-17
 ARG MAVEN_OPTS
 ARG MAVEN_REPO_LOCAL
-ENV MAVEN_OPTS=${MAVEN_OPTS} \
-    MAVEN_REPO_LOCAL=${MAVEN_REPO_LOCAL}
 WORKDIR /app
 
 # Копируем кэш Maven (зависимости + плагины + собранные классы)

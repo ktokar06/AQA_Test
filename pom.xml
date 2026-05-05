@@ -64,6 +64,11 @@
       <version>${slf4j.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.apache.maven.surefire</groupId>
+      <artifactId>surefire-testng</artifactId>
+      <version>${maven.surefire.plugin.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -91,7 +96,7 @@
           </suiteXmlFiles>
 
           <argLine>
-            -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
+            -javaagent:/tmp/maven-cache/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
             -Djava.net.preferIPv4Stack=true
           </argLine>
 

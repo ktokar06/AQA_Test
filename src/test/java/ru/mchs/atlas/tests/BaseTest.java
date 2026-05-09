@@ -1,5 +1,6 @@
 package ru.mchs.atlas.tests;
 
+import org.openqa.selenium.PageLoadStrategy;
 import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,6 +11,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Parameters;
+import ru.mchs.atlas.utils.NetworkBlocker;
 import ru.mchs.atlas.listeners.TestListener;
 
 import java.net.MalformedURLException;
@@ -39,9 +41,12 @@ public class BaseTest {
         switch (browser.toLowerCase()) {
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
                 firefoxOptions.addArguments("--headless");
                 firefoxOptions.addArguments("--width=1920");
                 firefoxOptions.addArguments("--height=1080");
+
+                NetworkBlocker.blockFirefox(firefoxOptions);
 
                 remote = new RemoteWebDriver(
                         new URL("http://selenium-firefox:4444"),
@@ -52,6 +57,7 @@ public class BaseTest {
             case "chrome":
             default:
                 ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
                 chromeOptions.addArguments("--headless");
                 chromeOptions.addArguments("--no-sandbox");
                 chromeOptions.addArguments("--disable-dev-shm-usage");
@@ -62,6 +68,8 @@ public class BaseTest {
                         new URL("http://selenium-chrome:4444"),
                         chromeOptions
                 );
+
+                NetworkBlocker.blockChrome(remote);
                 break;
         }
 

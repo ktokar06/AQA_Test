@@ -55,9 +55,12 @@ public void setUp(String browser) throws MalformedURLException {
   switch (browser.toLowerCase()) {
     case "firefox":
       FirefoxOptions firefoxOptions = new FirefoxOptions();
+      firefoxOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
       firefoxOptions.addArguments("--headless");
       firefoxOptions.addArguments("--width=1920");
       firefoxOptions.addArguments("--height=1080");
+
+      NetworkBlocker.blockFirefox(firefoxOptions);
 
       remote = new RemoteWebDriver(
               new URL("http://selenium-firefox:4444"),
@@ -68,6 +71,7 @@ public void setUp(String browser) throws MalformedURLException {
     case "chrome":
     default:
       ChromeOptions chromeOptions = new ChromeOptions();
+      chromeOptions.setPageLoadStrategy(PageLoadStrategy.EAGER);
       chromeOptions.addArguments("--headless");
       chromeOptions.addArguments("--no-sandbox");
       chromeOptions.addArguments("--disable-dev-shm-usage");
@@ -78,6 +82,8 @@ public void setUp(String browser) throws MalformedURLException {
               new URL("http://selenium-chrome:4444"),
               chromeOptions
       );
+
+      NetworkBlocker.blockChrome(remote);
       break;
   }
 

@@ -60,8 +60,6 @@ public void setUp(String browser) throws MalformedURLException {
       firefoxOptions.addArguments("--width=1920");
       firefoxOptions.addArguments("--height=1080");
 
-      NetworkBlocker.blockFirefox(firefoxOptions);
-
       remote = new RemoteWebDriver(
               new URL("http://selenium-firefox:4444"),
               firefoxOptions
@@ -83,7 +81,6 @@ public void setUp(String browser) throws MalformedURLException {
               chromeOptions
       );
 
-      NetworkBlocker.blockChrome(remote);
       break;
   }
 

@@ -45,9 +45,7 @@ public class BaseTest {
                 firefoxOptions.addArguments("--headless");
                 firefoxOptions.addArguments("--width=1920");
                 firefoxOptions.addArguments("--height=1080");
-
-                NetworkBlocker.blockFirefox(firefoxOptions);
-
+                
                 remote = new RemoteWebDriver(
                         new URL("http://selenium-firefox:4444"),
                         firefoxOptions
@@ -69,7 +67,6 @@ public class BaseTest {
                         chromeOptions
                 );
 
-                NetworkBlocker.blockChrome(remote);
                 break;
         }
 
